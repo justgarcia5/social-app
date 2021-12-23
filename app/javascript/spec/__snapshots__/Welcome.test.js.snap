@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Welcome should render banner text correctly with given strings 1`] = `
+<h1>
+  Display Active Users Account Details
+</h1>
+`;
+
+exports[`Welcome should render correctly in "debug" mode 1`] = `
+<h1>
+  Display Active Users Account Details
+</h1>
+`;
+
+exports[`Welcome should render correctly with no props 1`] = `
+<h1>
+  Display Active Users Account Details
+</h1>
+`;

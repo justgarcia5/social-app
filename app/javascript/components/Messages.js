@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from "react";
+import MessageForm from "./MessageForm";
 
 export default function Messages(props) {
-    const [lastConvo, setLastConvo] = useState();
+    const [convoId , setConvoId] = useState(null)
+    const [messages , setMessages] = useState()
 
     useEffect(() => {
-        const convoIndex = props.conversations.length - props.conversations.length;
-        fetch(`/conversations/${props.conversations[convoIndex].id}/messages.json`)
-            .then(res => res.json())
-            .then(data => setLastConvo(data))
-    },[])
+        if(props.messages)
+            setConvoId(props.messages[0].conversation_id)
+            setMessages(props.messages)
+    }, [props.messages])
+
+    console.log(messages)
 
     return(
         <div style={styles.messagesDiv}>
-            {props.clicked && props.messages &&
-                props.messages.map((message, i) => {
+            {messages &&
+                messages.map((message, i) => {
                     return(
                         <div key={message.id} style={(message.user_id === props.currentUser.id) ? styles.userMessageCard : styles.recipientMessageCard}>
                             <p style={styles.message}>{message.body}</p>
@@ -21,15 +24,12 @@ export default function Messages(props) {
                     )
                 })
             }
-            {!props.clicked && lastConvo &&
-                lastConvo.map((message, i) => {
-                    return(
-                        <div key={message.id} style={(message.user_id === props.currentUser.id) ? styles.userMessageCard : styles.recipientMessageCard} >
-                            <p style={styles.message}>{message.body}</p>
-                        </div>
-                    )
-                })
-            }
+            <MessageForm
+                messages={props.messages}
+                currentUser={props.currentUser}
+                convoId={convoId}
+                fetchMessages={props.fetchMessages}
+            />
         </div>
     )
 }
@@ -38,23 +38,24 @@ const styles = {
     userMessageCard: {
         backgroundColor: "blue",
         color: "white",
-        borderRadius: 8,
-        margin: 0,
-        maxWidth: 400
+        borderRadius: 16,
+        width: 'max-content',
+        marginLeft: 'auto'
     },
     recipientMessageCard: {
         backgroundColor: "darkgrey",
         color: "white",
-        borderRadius: 8,
-        maxWidth: 400,
-        // textAlign: "right",
-        margin: 0,
+        borderRadius: 16,
+        width: 'max-content',
     },
     message: {
         padding: 10,
+        margin: 4
     },
     messagesDiv: {
+        padding: '2px 20px',
         width: 700,
-        margin: 10
+        backgroundColor: 'lightgrey',
+        display: 'inline'
     }
 }

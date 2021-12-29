@@ -1,4 +1,6 @@
 class MessagesController < ApplicationController
+    skip_before_action :verify_authenticity_token
+
     before_action do
         @conversation = Conversation.find(params[:conversation_id])
     end
